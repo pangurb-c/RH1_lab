@@ -2,12 +2,12 @@
 - name: Task 1
   hosts: all
   become: true
-  vars: 
-    groups: 
-        - Sales
-        - IT
-        - Support
-        - Services
+  vars:
+    groups:
+      - Sales
+      - IT
+      - Support
+      - Services
   tasks:
     - name: Create Groups
       ansible.builtin.group:
