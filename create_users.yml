@@ -5,7 +5,7 @@
   tasks:
     - name: Create Groups
       ansible.builtin.group:
-        name: item
+        name: "{{ item }}"
       loop:
         - Sales
         - IT
