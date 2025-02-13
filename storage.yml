@@ -1,5 +1,8 @@
 - name: Ensure storage exists on rhel
   hosts: server2
+  collections:
+    - ansible.posix
+    - rhel_system_roles
   vars: 
     storage_volumes:
       - name: extdrive
@@ -9,7 +12,7 @@
         size: 1G
         automount: yes
         mount_point: /extdrive
-        group: IT
+        group: ITxs
         mode: 0770
   roles: 
-    - storage
+    - rhel_system_roles.storage
