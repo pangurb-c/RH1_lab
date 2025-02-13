@@ -12,4 +12,4 @@
         group: IT
         mode: 0770
   roles: 
-    - rhel-system-roles.storage
+    - storage
