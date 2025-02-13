@@ -1,6 +1,6 @@
 ---
 - name: Task 1
-  hosts: localhost
+  hosts: all
   tasks:
     - name: Create Groups
       ansible.builtin.group:
