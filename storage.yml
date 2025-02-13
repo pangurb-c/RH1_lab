@@ -1,27 +1,15 @@
-- name: Setup 1GB XFS partition and mount it
-  hosts: all
-  become: yes
-  tasks:
-
-    - name: Create a 1GB partition on /dev/nvme1n1
-      community.general.parted:
-        device: /dev/nvme1n1
-        number: 1
+- name: Ensure storage exists on rhel
+  hosts: server2
+  vars: 
+    storage_volumes:
+      - name: extdrive
         state: present
-        part_end: 1GiB
+        device: /dev/nvme1n1
         fs_type: xfs
-
-    - name: Mount the partition
-      ansible.posix.mount:
-        path: /extdrive
-        src: /dev/nvme1n1p1
-        state: mounted
-        opts: defaults
-    
-    - name: Set correct permissions for IT group
-      file:
-        path: /extdrive
-        state: directory
-        mode: "0750"
-        owner: root
-        group: it
+        size: 1G
+        automount: yes
+        mount_point: /extdrive
+        group: ITxs
+        mode: 0770
+  roles: 
+    - redhat.rhel_system_roles.storage
