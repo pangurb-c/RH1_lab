@@ -1,4 +1,0 @@
----
-collections:
-  - name: ansible.posix
-  - name: rhel_system_roles

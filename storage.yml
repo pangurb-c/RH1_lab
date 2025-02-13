@@ -1,18 +1,46 @@
-- name: Ensure storage exists on rhel
-  hosts: server2
-  collections:
-    - ansible.posix
-    - rhel_system_roles
-  vars: 
-    storage_volumes:
-      - name: extdrive
-        state: present
+- name: Setup 1GB XFS partition and mount it
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Create a 1GB partition on /dev/nvme1n1
+      community.general.parted:
         device: /dev/nvme1n1
+        number: 1
+        state: present
+        part_end: 1GiB
         fs_type: xfs
-        size: 1G
-        automount: yes
-        mount_point: /extdrive
-        group: ITxs
-        mode: 0770
-  roles: 
-    - rhel_system_roles.storage
+
+    - name: Format the partition with XFS
+      filesystem:
+        fstype: xfs
+        dev: /dev/nvme1n1p1
+
+    - name: Create the mount point
+      file:
+        path: /extdrive
+        state: directory
+        mode: "0750"
+        owner: root
+        group: it
+
+    - name: Get UUID of the new partition
+      command: blkid -s UUID -o value /dev/nvme1n1p1
+      register: blkid_result
+      changed_when: false
+
+    - name: Mount the partition persistently
+      mount:
+        path: /extdrive
+        src: "UUID={{ blkid_result.stdout }}"
+        fstype: xfs
+        opts: defaults
+        state: mounted
+
+    - name: Set correct permissions for IT group
+      file:
+        path: /extdrive
+        state: directory
+        mode: "0750"
+        owner: root
+        group: it
