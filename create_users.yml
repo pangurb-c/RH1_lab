@@ -2,15 +2,17 @@
 - name: Task 1
   hosts: all
   become: true
-  tasks:
-    - name: Create Groups
-      ansible.builtin.group:
-        name: "{{ item }}"
-      loop:
+  vars: 
+    groups: 
         - Sales
         - IT
         - Support
         - Services
+  tasks:
+    - name: Create Groups
+      ansible.builtin.group:
+        name: "{{ item }}"
+      loop: "{{ groups }}"
 
     - name: Create Users
       ansible.builtin.user:
@@ -28,3 +30,25 @@
         - [Harold, IT]
         - [Isabella, Services]
         - [Jameson, Services]
+
+    - name: Create folders
+      ansible.builtin.file:
+        state: directory
+        path: "/team/{{ item }}"
+        group: "{{ item }}"
+        mode: '0077'
+      loop: "{{ groups }}"
+    
+    - name: Create sales file
+      ansible.builtin.file:
+        path: /sales/Salesnumbers
+        mode: '0666'
+    
+    - name: Add line to file
+      ansible.builtin.lineinfile:
+        path: /it/tasks.done
+        line: 'all folders are set'
+        state: present
+        create: true
+        insertbefore: BOF
+        mode: '0666'
