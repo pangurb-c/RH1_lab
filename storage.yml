@@ -1,0 +1,15 @@
+- name: Ensure storage exists on rhel
+  hosts: server2
+  vars: 
+    storage_volumes:
+      - name: extdrive
+        state: present
+        device: /dev/nvme1n1
+        fs_type: xfs
+        size: 1G
+        automount: yes
+        mount_point: /extdrive
+        group: IT
+        mode: 0770
+  roles: 
+    - rhel-system-roles.storage
