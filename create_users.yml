@@ -14,8 +14,8 @@
 
     - name: Create Users
       ansible.builtin.user:
-        name: item[0]
-        group: item[1]
+        name: "{{ item[0] }}"
+        group: "{{ item[1] }}"
         password: "{{ '@#FD12' | password_hash('sha512') }}"
       loop:
         - [Annabelle, Sales]
