@@ -11,11 +11,6 @@
         part_end: 1GiB
         fs_type: xfs
 
-    - name: Format the partition with XFS
-      community.general.filesystem:
-        fstype: xfs
-        dev: /dev/nvme1n1p1
-
     - name: Mount the partition
       ansible.posix.mount:
         path: /extdrive
