@@ -56,7 +56,7 @@
     - name: Create sales file
       ansible.builtin.file:
         path: /sales/Salesnumbers
-        state: file
+        state: touch
         mode: '0666'
     
     - name: Add line to file
