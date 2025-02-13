@@ -15,7 +15,6 @@
       ansible.posix.mount:
         path: /extdrive
         src: /dev/nvme1n1p1
-        fstype: xfs
         state: mounted
         opts: defaults
     
