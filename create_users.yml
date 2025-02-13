@@ -50,6 +50,7 @@
     - name: Create sales file
       ansible.builtin.file:
         path: /sales/Salesnumbers
+        state: present
         mode: '0666'
     
     - name: Add line to file
