@@ -40,7 +40,7 @@
         state: directory
         path: "/team/{{ item }}"
         group: "{{ item }}"
-        mode: '0077'
+        mode: '0777'
       loop:
         - Sales
         - IT
@@ -51,7 +51,7 @@
       ansible.builtin.file:
         state: directory
         path: "/sales"
-        mode: '0077'
+        mode: '0777'
     
     - name: Create sales file
       ansible.builtin.file:
