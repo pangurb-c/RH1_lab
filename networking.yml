@@ -1,0 +1,19 @@
+---
+- name: Task 1
+  hosts: all
+  become: true
+  tasks:
+    - name: setup NTP on server 2
+      package: 
+        name: ntp
+        state: present
+    - name: Configure NTP server
+      lineinfile:
+        path: /etc/ntp.conf
+        regexp: 'server'
+        line: 'server 3.north-america.pool.ntp.org'
+        insertafter: 'restrict default ignore'
+    - name: Restart NTP service
+      service:
+        name: ntpd
+        state: restarted
